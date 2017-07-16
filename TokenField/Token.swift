@@ -89,7 +89,7 @@ public class Token: UIView {
     }
 
     private func setup() {
-        backgroundView.layer.cornerRadius = 5
+        backgroundView.layer.cornerRadius = 3
         tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(Token.didTapToken(_:)))
         colorScheme = UIColor.blue
         addGestureRecognizer(tapGestureRecognizer)
@@ -98,6 +98,7 @@ public class Token: UIView {
     private func updateUI() {
         let backgroundColor = highlighted ? highlitedColorScheme.withAlphaComponent(0.6) : colorScheme
         backgroundView.backgroundColor = backgroundColor
+        backgroundView.layer.cor
     }
     
 }
