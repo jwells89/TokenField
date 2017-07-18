@@ -98,7 +98,6 @@ public class Token: UIView {
     private func updateUI() {
         let backgroundColor = highlighted ? highlitedColorScheme.withAlphaComponent(0.6) : colorScheme
         backgroundView.backgroundColor = backgroundColor
-        backgroundView.layer.cor
     }
     
 }
