@@ -5,9 +5,6 @@
 //  Created by Reid Chatham on 11/4/16.
 //  Copyright © 2016 Reid Chatham. All rights reserved.
 //
-//  Edited by Sang Lee on 07/09/17.
-//  This file has been changed for the use of CircleIn.
-//
 
 import UIKit
 
@@ -99,5 +96,5 @@ public class Token: UIView {
         let backgroundColor = highlighted ? highlitedColorScheme.withAlphaComponent(0.6) : colorScheme
         backgroundView.backgroundColor = backgroundColor
     }
-    
+
 }

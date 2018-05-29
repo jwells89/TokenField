@@ -5,9 +5,6 @@
 //  Created by Reid Chatham on 11/4/16.
 //  Copyright © 2016 Reid Chatham. All rights reserved.
 //
-//  Edited by Sang Lee on 07/09/17.
-//  This file has been changed for the use of CircleIn.
-//
 
 import UIKit
 
@@ -426,6 +423,7 @@ public class TokenField: UIView {
             //    self?.didTap(token: token)
             //}
             token.colorScheme = dataSource?.tokenField(self, colorSchemedForTokenAtIndex: i) ?? colorScheme
+
             token.highlitedColorScheme = dataSource?.tokenField(self, highlightedColorSchemedForTokenAtIndex: i) ?? colorScheme
             token.titleLabel.textColor = dataSource?.tokenField(self, fontColorSchemedForTokenAtIndex: i) ?? colorScheme
 
