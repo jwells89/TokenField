@@ -54,7 +54,7 @@ public class Token: UIView {
     }
 
     /// Internal function that responds to the Token's tapGestureRecognizer.
-    internal func didTapToken(_ sender: UITapGestureRecognizer) {
+    @objc internal func didTapToken(_ sender: UITapGestureRecognizer) {
         delegate?.didTapToken(self)
     }
 
@@ -76,9 +76,9 @@ public class Token: UIView {
     private var tapGestureRecognizer: UITapGestureRecognizer!
 
     private func loadView() {
-        let type = type(of: self)
-        let bundle = Bundle(for: type)
-        let nib = UINib(nibName: String(describing: type), bundle: bundle)
+        let bundleType = type(of: self)
+        let bundle = Bundle(for: bundleType)
+        let nib = UINib(nibName: String(describing: bundleType), bundle: bundle)
         let view = nib.instantiate(withOwner: self, options: nil).first! as! UIView
         view.frame = bounds
         view.autoresizingMask = [.flexibleWidth, .flexibleHeight]

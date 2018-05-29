@@ -240,7 +240,7 @@ public class TokenField: UIView {
 
     // MARK: - Internal
 
-    internal func handleSingleTap(_ sender: UITapGestureRecognizer) {
+    @objc internal func handleSingleTap(_ sender: UITapGestureRecognizer) {
         _ = becomeFirstResponder()
     }
 
