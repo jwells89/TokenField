@@ -337,8 +337,8 @@ public class TokenField: UIView {
             right: self.horizontalInset
         )
         scrollView.autoresizingMask = [
-            UIViewAutoresizing.flexibleHeight,
-            UIViewAutoresizing.flexibleWidth
+            .flexibleHeight,
+            .flexibleWidth
         ]
         return scrollView
     }()
@@ -493,7 +493,7 @@ public class TokenField: UIView {
             inputTextView.text = ""
         }
         scrollView.addSubview(inputTextView)
-        scrollView.sendSubview(toBack: inputTextView)
+        scrollView.sendSubviewToBack(inputTextView)
     }
 
     private func inputTextViewBecomeFirstResponder() {
