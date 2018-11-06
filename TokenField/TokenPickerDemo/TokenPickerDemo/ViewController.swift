@@ -79,8 +79,8 @@ extension ViewController: TokenFieldDataSource {
         return tokens[index]
     }
     
-    func tokenField(_ tokenField: TokenField, colorSchemedForTokenAtIndex index: Int) -> UIColor {
-        return view.tintColor.withAlphaComponent(0.15)
+    func tokenField(_ tokenField: TokenField, colorSchemeForTokenAtIndex index: Int) -> TokenColorScheme {
+        return (textColor: .orange, backgroundColor: .clear)
     }
     
     func numberOfTokensInTokenField(_ tokenField: TokenField) -> Int {
@@ -91,12 +91,8 @@ extension ViewController: TokenFieldDataSource {
         return tokenField.toLabelText
     }
     
-    func tokenField(_ tokenField: TokenField, fontColorSchemedForTokenAtIndex index: Int) -> UIColor {
-        return .black
-    }
-    
-    func tokenField(_ tokenField: TokenField, highlightedColorSchemedForTokenAtIndex index: Int) -> UIColor {
-        return view.tintColor
+    func tokenField(_ tokenField: TokenField, highlightedColorSchemedForTokenAtIndex index: Int) -> TokenColorScheme {
+        return (textColor: .white, backgroundColor: .orange)
     }
     
 }

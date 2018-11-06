@@ -27,16 +27,17 @@ public protocol TokenFieldDataSource: class {
     /// The title for the Token object at a given index.
     func tokenField(_ tokenField: TokenField, titleForTokenAtIndex index: Int) -> String
     /// The color scheme for the Token object at a given index.
-    func tokenField(_ tokenField: TokenField, colorSchemedForTokenAtIndex index: Int) -> UIColor
+    func tokenField(_ tokenField: TokenField, colorSchemeForTokenAtIndex index: Int) -> TokenColorScheme
     /// The number of Token objects in the TokenField.
     func numberOfTokensInTokenField(_ tokenField: TokenField) -> Int
     /// The text to display in the TokenField when the field is inactive.
     func tokenFieldCollapsedText(_ tokenField: TokenField) -> String
-    /// The font color scheme for the Token object at a given index.
-    func tokenField(_ tokenField: TokenField, fontColorSchemedForTokenAtIndex index: Int) -> UIColor
-    /// The highlited color scheme for the Token object at a given index.
-    func tokenField(_ tokenField: TokenField, highlightedColorSchemedForTokenAtIndex index: Int) -> UIColor
+    /// The highlighted color scheme for the Token object at a given index.
+    func tokenField(_ tokenField: TokenField, highlightedColorSchemedForTokenAtIndex index: Int) -> TokenColorScheme
 }
+
+/// Color scheme type used by `TokenFieldDataSource`.
+public typealias TokenColorScheme = (textColor: UIColor, backgroundColor: UIColor)
 
 /// TokenField subclass of UIView to display tokens and text as in the messages and mail app.
 public class TokenField: UIView {
@@ -120,10 +121,10 @@ public class TokenField: UIView {
         }
     }
     /// TokenField color scheme, initial value = .blue
-    public var colorScheme: UIColor = .blue {
+    public var colorScheme: TokenColorScheme = (textColor: .blue, backgroundColor: .clear) {
         didSet {
-            collapsedLabel?.textColor = colorScheme
-            inputTextView.textColor = colorScheme
+            collapsedLabel?.textColor = colorScheme.textColor
+            inputTextView.textColor = colorScheme.textColor
             for token in tokens {
                 token.colorScheme = colorScheme
             }
@@ -156,7 +157,7 @@ public class TokenField: UIView {
         inputTextView.font = .systemFont(ofSize: 15)
         inputTextView.autocorrectionType = self.autocorrectionType
         inputTextView.autocapitalizationType = self.autocapitalizationType
-        inputTextView.tintColor = self.colorScheme
+        inputTextView.tintColor = self.colorScheme.textColor
         inputTextView.isScrollEnabled = false
         inputTextView.textContainer.lineBreakMode = .byWordWrapping
         inputTextView.delegate = self
@@ -388,7 +389,7 @@ public class TokenField: UIView {
         )
         label.font = .systemFont(ofSize: 15)
         label.text = dataSource?.tokenFieldCollapsedText(self) ?? ""
-        label.textColor = colorScheme
+        label.textColor = colorScheme.textColor
         label.minimumScaleFactor = 5.0/label.font.pointSize
         label.adjustsFontSizeToFitWidth = true
         addSubview(label)
@@ -422,10 +423,9 @@ public class TokenField: UIView {
             //token.didTapTokenBlock = { [weak self] token in
             //    self?.didTap(token: token)
             //}
-            token.colorScheme = dataSource?.tokenField(self, colorSchemedForTokenAtIndex: i) ?? colorScheme
+            token.colorScheme = dataSource?.tokenField(self, colorSchemeForTokenAtIndex: i) ?? colorScheme
 
-            token.highlitedColorScheme = dataSource?.tokenField(self, highlightedColorSchemedForTokenAtIndex: i) ?? colorScheme
-            token.titleLabel.textColor = dataSource?.tokenField(self, fontColorSchemedForTokenAtIndex: i) ?? colorScheme
+            token.highlightedColorScheme = dataSource?.tokenField(self, highlightedColorSchemedForTokenAtIndex: i) ?? colorScheme
 
             tokens.append(token)
             if currentX + token.frame.width <= scrollView.contentSize.width { // token fits in current line

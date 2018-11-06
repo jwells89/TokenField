@@ -23,11 +23,11 @@ public class Token: UIView {
     /// Token's title. Immutable.
     public let title: String
     /// UIColor representing the color for the Token. Changing this value automatically calls the private method updateUI().
-    public var colorScheme: UIColor = UIColor.blue { didSet { updateUI() } }
+    public var colorScheme: TokenColorScheme = (textColor: .blue, backgroundColor: .clear)  { didSet { updateUI() } }
     /// Bool determing whether the Token is highlighted or not. Changing this value automatically calls the private method updateUI().
     internal var highlighted: Bool = false { didSet { updateUI() } }
 
-    public var highlitedColorScheme: UIColor = UIColor.blue { didSet { updateUI() } }
+    public var highlightedColorScheme: TokenColorScheme = (textColor: .white, backgroundColor: .blue) { didSet { updateUI() } }
 
     /// Takes the title for the token and returns a Token sublclass of UIView. The Token is not highlighted and is UIColor.blue.
     public init(title: String) {
@@ -88,13 +88,16 @@ public class Token: UIView {
     private func setup() {
         backgroundView.layer.cornerRadius = 3
         tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(Token.didTapToken(_:)))
-        colorScheme = UIColor.blue
+        colorScheme = (textColor: tintColor, backgroundColor: .clear)
+        highlightedColorScheme = (textColor: .white, backgroundColor: tintColor)
         addGestureRecognizer(tapGestureRecognizer)
     }
 
     private func updateUI() {
-        let backgroundColor = highlighted ? highlitedColorScheme.withAlphaComponent(0.6) : colorScheme
+        let backgroundColor = highlighted ? highlightedColorScheme.backgroundColor : colorScheme.backgroundColor
+        let textColor = highlighted ? highlightedColorScheme.textColor : colorScheme.textColor
         backgroundView.backgroundColor = backgroundColor
+        titleLabel.textColor = textColor
     }
 
 }
