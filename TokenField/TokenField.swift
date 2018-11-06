@@ -50,17 +50,17 @@ public class TokenField: UIView {
         /// Default maximum height = 150.0
         public static let defaultMaxHeight: CGFloat          = 150.0
         /// Default vertical inset = 7.0
-        public static let defaultVerticalInset: CGFloat      = 7.0
+        public static let defaultVerticalInset: CGFloat      = 0
         /// Default horizontal inset = 15.0
         public static let defaultHorizontalInset: CGFloat    = 15.0
         /// Default token padding = 2.0
-        public static let defaultTokenPadding: CGFloat       = 2.0
+        public static let defaultTokenPadding: CGFloat       = 6.0
         /// Default minimum input width = 80.0
         public static let defaultMinInputWidth: CGFloat      = 80.0
         /// Default to label paddig = 5.0
-        public static let defaultTokenHeight: CGFloat        = 30.0
+        public static let defaultTokenHeight: CGFloat        = 22.0
         /// Default vertical padding = 2.0
-        public static let defaultVeritcalPadding: CGFloat    = 2.0
+        public static let defaultVerticalPadding: CGFloat    = 0
     }
 
     /// TokenField's maximum height value.
@@ -314,6 +314,8 @@ public class TokenField: UIView {
 
     private func setup() {
         originalHeight = frame.height
+        inputTextView.textContainerInset = UIEdgeInsets(top: 2, left: 0, bottom: 2, right: 0)
+        inputTextView.textContainer.lineFragmentPadding = 8
 
         addSubview(invisibleTextField)
         addSubview(scrollView)
@@ -342,7 +344,7 @@ public class TokenField: UIView {
                     height: token.frame.height
                 )
             } else {
-                currentY += token.frame.height + Constants.defaultVeritcalPadding
+                currentY += token.frame.height + Constants.defaultVerticalPadding
                 currentX = 0
                 var tokenWidth = token.frame.width
                 if (tokenWidth > scrollView.contentSize.width) { // token is wider than max width
@@ -367,7 +369,7 @@ public class TokenField: UIView {
             : Constants.defaultTokenHeight
 
         if currentX + Constants.defaultMinInputWidth >= scrollView.contentSize.width {
-            currentY += Constants.defaultTokenHeight + Constants.defaultVeritcalPadding
+            currentY += Constants.defaultTokenHeight + Constants.defaultVerticalPadding
 
         }
 

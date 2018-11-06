@@ -19,10 +19,11 @@ internal class BackspaceTextView: UITextView {
     /// The backspace delegate for the BackspaceTextView
     internal weak var backspaceDelegate: BackspaceTextViewDelegate?
     
-    internal func keyboardInputShouldDelete(_ textView: UITextView) -> Bool {
+    override func deleteBackward() {
+        super.deleteBackward()
+        
         if text.isEmpty {
             backspaceDelegate?.textViewDidEnterBackspace(self)
         }
-        return true
     }
 }
