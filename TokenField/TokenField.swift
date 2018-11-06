@@ -30,8 +30,6 @@ public protocol TokenFieldDataSource: class {
     func tokenField(_ tokenField: TokenField, colorSchemeForTokenAtIndex index: Int) -> TokenColorScheme
     /// The number of Token objects in the TokenField.
     func numberOfTokensInTokenField(_ tokenField: TokenField) -> Int
-    /// The text to display in the TokenField when the field is inactive.
-    func tokenFieldCollapsedText(_ tokenField: TokenField) -> String
     /// The highlighted color scheme for the Token object at a given index.
     func tokenField(_ tokenField: TokenField, highlightedColorSchemedForTokenAtIndex index: Int) -> TokenColorScheme
 }
@@ -60,8 +58,6 @@ public class TokenField: UIView {
         /// Default minimum input width = 80.0
         public static let defaultMinInputWidth: CGFloat      = 80.0
         /// Default to label paddig = 5.0
-        public static let defaultToLabelPadding: CGFloat     = 5.0
-        /// Default token height = 30.0
         public static let defaultTokenHeight: CGFloat        = 30.0
         /// Default vertical padding = 2.0
         public static let defaultVeritcalPadding: CGFloat    = 2.0
@@ -101,19 +97,6 @@ public class TokenField: UIView {
             inputTextView.inputAccessoryView = inputTextViewAccessoryView
         }
     }
-    /// To label text color.
-    public var toLabelTextColor: UIColor = UIColor(red: 112/255.0, green: 124/255.0, blue: 124/255.0, alpha: 1.0) {
-        didSet {
-            toLabel.textColor = toLabelTextColor
-        }
-    }
-    /// To label text.
-    public var toLabelText: String = NSLocalizedString("To:", comment: "") {
-        didSet {
-            toLabel.text = toLabelText
-            reloadData()
-        }
-    }
     /// Input textView text color.
     public var inputTextViewTextColor: UIColor = UIColor(red: 38/255.0, green: 39/255.0, blue: 41/255.0, alpha: 1.0) {
         didSet {
@@ -123,7 +106,6 @@ public class TokenField: UIView {
     /// TokenField color scheme, initial value = .blue
     public var colorScheme: TokenColorScheme = (textColor: .blue, backgroundColor: .clear) {
         didSet {
-            collapsedLabel?.textColor = colorScheme.textColor
             inputTextView.textColor = colorScheme.textColor
             for token in tokens {
                 token.colorScheme = colorScheme
@@ -136,18 +118,6 @@ public class TokenField: UIView {
             inputTextView.accessibilityLabel = inputTextViewAccessibilityLabel
         }
     }
-
-    /// To label. Lazily instantiated.
-    public lazy var toLabel: UILabel = {
-        let toLabel = UILabel(frame: CGRect.zero)
-        toLabel.textColor = self.toLabelTextColor
-        toLabel.font = .systemFont(ofSize: 15)
-        toLabel.frame.origin.x = 0.0
-        toLabel.text = self.toLabelText
-        toLabel.sizeToFit()
-        toLabel.frame.size.height = Constants.defaultTokenHeight
-        return toLabel
-    }()
 
     /// Input textView. Lazily instantited.
     public lazy var inputTextView: UITextView = {
@@ -208,11 +178,6 @@ public class TokenField: UIView {
         return inputTextView.resignFirstResponder()
     }
 
-    /// Collapses the TokenField.
-    public func collapse() {
-        layoutCollapsedLabel()
-    }
-
     /// Reload's the TokenField's data and lays out it's views.
     public func reloadData() {
         layoutTokensAndInputWithFrameAdjustment(true)
@@ -232,11 +197,7 @@ public class TokenField: UIView {
             width: frame.width - Constants.defaultHorizontalInset * 2,
             height: frame.height - Constants.defaultVerticalInset * 2
         )
-        if collapsedLabel?.superview != nil {
-            layoutCollapsedLabel()
-        } else {
-            layoutTokensAndInputWithFrameAdjustment(false)
-        }
+        layoutTokensAndInputWithFrameAdjustment(false)
     }
 
     // MARK: - Internal
@@ -250,7 +211,6 @@ public class TokenField: UIView {
     fileprivate var tokens: [Token] = []
 
     fileprivate func layoutTokensAndInputWithFrameAdjustment(_ shouldAdjustFrame: Bool) {
-        collapsedLabel?.removeFromSuperview()
         let inputViewShouldBecomeFirstResponder = inputTextView.isFirstResponder
         scrollView.subviews.forEach { $0.removeFromSuperview() }
         scrollView.isHidden = false
@@ -265,7 +225,6 @@ public class TokenField: UIView {
         var currentX: CGFloat = 0.0
         var currentY: CGFloat = 0.0
 
-        layoutToLabelInView(scrollView, origin: CGPoint.zero, currentX: &currentX)
         layoutTokensWith(currentX: &currentX, currentY: &currentY)
         layoutInputTextViewWith(currentX: &currentX, currentY: &currentY, clearInput: shouldAdjustFrame)
 
@@ -352,8 +311,6 @@ public class TokenField: UIView {
         invisibleTextField.backspaceDelegate = self
         return invisibleTextField
     }()
-    private var collapsedLabel: UILabel?
-
 
     private func setup() {
         originalHeight = frame.height
@@ -361,57 +318,6 @@ public class TokenField: UIView {
         addSubview(invisibleTextField)
         addSubview(scrollView)
         reloadData()
-    }
-
-    private func layoutCollapsedLabel() {
-        collapsedLabel?.removeFromSuperview()
-        scrollView.isHidden = true
-        var frame = self.frame
-        frame.size.height = originalHeight
-        self.frame = frame
-
-        var currentX: CGFloat = 0.0
-        layoutToLabelInView(self, origin: CGPoint(x: Constants.defaultHorizontalInset, y: Constants.defaultVerticalInset), currentX: &currentX)
-        layoutCollapsedLabelWith(currentX: &currentX)
-
-        tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(TokenField.handleSingleTap(_:)))
-        addGestureRecognizer(tapGestureRecognizer!)
-    }
-
-    private func layoutCollapsedLabelWith(currentX: inout CGFloat) {
-        let label = UILabel(
-            frame: CGRect(
-                x: currentX,
-                y: toLabel.frame.minY,
-                width: frame.size.width - currentX - Constants.defaultHorizontalInset,
-                height: toLabel.frame.height
-            )
-        )
-        label.font = .systemFont(ofSize: 15)
-        label.text = dataSource?.tokenFieldCollapsedText(self) ?? ""
-        label.textColor = colorScheme.textColor
-        label.minimumScaleFactor = 5.0/label.font.pointSize
-        label.adjustsFontSizeToFitWidth = true
-        addSubview(label)
-        collapsedLabel = label
-    }
-
-    private func layoutToLabelInView(_ view: UIView, origin: CGPoint, currentX: inout CGFloat) {
-        toLabel.removeFromSuperview()
-
-        currentX = origin.x
-
-        var newFrame = toLabel.frame
-        newFrame.origin = origin
-
-        toLabel.sizeToFit()
-        newFrame.size.width = toLabel.frame.width
-
-        toLabel.frame = newFrame
-
-        view.addSubview(toLabel)
-        let xIncrement = toLabel.isHidden ? 0.0 : toLabel.frame.width + Constants.defaultTokenPadding
-        currentX += xIncrement
     }
 
     private func layoutTokensWith(currentX: inout CGFloat, currentY: inout CGFloat) {
@@ -473,10 +379,6 @@ public class TokenField: UIView {
         )
 
         var exclusionPaths: [UIBezierPath] = []
-
-        if inputTextView.frame.origin.y == toLabel.frame.origin.y {
-            exclusionPaths.append(UIBezierPath(rect: toLabel.frame))
-        }
 
         for token in tokens {
             if inputTextView.frame.origin.y == token.frame.origin.y {

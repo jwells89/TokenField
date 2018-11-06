@@ -87,10 +87,6 @@ extension ViewController: TokenFieldDataSource {
         return tokens.count
     }
     
-    func tokenFieldCollapsedText(_ tokenField: TokenField) -> String {
-        return tokenField.toLabelText
-    }
-    
     func tokenField(_ tokenField: TokenField, highlightedColorSchemedForTokenAtIndex index: Int) -> TokenColorScheme {
         return (textColor: .white, backgroundColor: .orange)
     }
