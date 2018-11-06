@@ -67,7 +67,7 @@ public class Token: UIView {
         didSet {
             titleLabel.text = title
             titleLabel.textColor = UIColor.white
-            titleLabel.font = UIFont(name: "HelveticaNeue", size: 15.5)
+            titleLabel.font = .systemFont(ofSize: 15)
         }
     }
 

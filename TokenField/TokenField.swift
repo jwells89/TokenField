@@ -140,7 +140,7 @@ public class TokenField: UIView {
     public lazy var toLabel: UILabel = {
         let toLabel = UILabel(frame: CGRect.zero)
         toLabel.textColor = self.toLabelTextColor
-        toLabel.font = UIFont(name: "HelveticaNeue", size: 15.0)
+        toLabel.font = .systemFont(ofSize: 15)
         toLabel.frame.origin.x = 0.0
         toLabel.text = self.toLabelText
         toLabel.sizeToFit()
@@ -153,7 +153,7 @@ public class TokenField: UIView {
         let inputTextView = BackspaceTextView()
         inputTextView.keyboardType = self.inputTextViewKeyboardType
         inputTextView.textColor = self.inputTextViewTextColor
-        inputTextView.font = UIFont(name: "HelveticaNeue", size: 15.5)
+        inputTextView.font = .systemFont(ofSize: 15)
         inputTextView.autocorrectionType = self.autocorrectionType
         inputTextView.autocapitalizationType = self.autocapitalizationType
         inputTextView.tintColor = self.colorScheme
@@ -386,7 +386,7 @@ public class TokenField: UIView {
                 height: toLabel.frame.height
             )
         )
-        label.font = UIFont(name: "HelveticaNeue", size: 15.5)
+        label.font = .systemFont(ofSize: 15)
         label.text = dataSource?.tokenFieldCollapsedText(self) ?? ""
         label.textColor = colorScheme
         label.minimumScaleFactor = 5.0/label.font.pointSize
