@@ -54,7 +54,7 @@ public class TokenField: UIView {
         /// Default horizontal inset = 15.0
         public static let defaultHorizontalInset: CGFloat    = 15.0
         /// Default token padding = 2.0
-        public static let defaultTokenPadding: CGFloat       = 6.0
+        public static let defaultTokenPadding: CGFloat       = 0
         /// Default minimum input width = 80.0
         public static let defaultMinInputWidth: CGFloat      = 80.0
         /// Default to label paddig = 5.0
@@ -315,7 +315,7 @@ public class TokenField: UIView {
     private func setup() {
         originalHeight = frame.height
         inputTextView.textContainerInset = UIEdgeInsets(top: 2, left: 0, bottom: 2, right: 0)
-        inputTextView.textContainer.lineFragmentPadding = 8
+        inputTextView.textContainer.lineFragmentPadding = 3
 
         addSubview(invisibleTextField)
         addSubview(scrollView)

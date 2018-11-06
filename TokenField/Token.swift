@@ -98,6 +98,7 @@ public class Token: UIView {
         let textColor = highlighted ? highlightedColorScheme.textColor : colorScheme.textColor
         backgroundView.backgroundColor = backgroundColor
         titleLabel.textColor = textColor
+        titleLabel.text = highlighted ? title : title + ","
     }
 
 }
