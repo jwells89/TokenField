@@ -75,21 +75,28 @@ extension ViewController: TokenFieldDelegate {
 }
 
 extension ViewController: TokenFieldDataSource {
-    
-    func numberOfTokensInTokenField(_ tokenField: TokenField) -> Int {
-        return tokens.count
-    }
-    
     func tokenField(_ tokenField: TokenField, titleForTokenAtIndex index: Int) -> String {
         return tokens[index]
     }
     
     func tokenField(_ tokenField: TokenField, colorSchemedForTokenAtIndex index: Int) -> UIColor {
-        return UIColor.blue
+        return view.tintColor.withAlphaComponent(0.15)
+    }
+    
+    func numberOfTokensInTokenField(_ tokenField: TokenField) -> Int {
+        return tokens.count
     }
     
     func tokenFieldCollapsedText(_ tokenField: TokenField) -> String {
-        return ""
+        return tokenField.toLabelText
+    }
+    
+    func tokenField(_ tokenField: TokenField, fontColorSchemedForTokenAtIndex index: Int) -> UIColor {
+        return .black
+    }
+    
+    func tokenField(_ tokenField: TokenField, highlightedColorSchemedForTokenAtIndex index: Int) -> UIColor {
+        return view.tintColor
     }
     
 }
