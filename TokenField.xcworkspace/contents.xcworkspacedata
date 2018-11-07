@@ -5,6 +5,6 @@
       location = "container:TokenField.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:TokenField/TokenPickerDemo/TokenPickerDemo.xcodeproj">
+      location = "group:TokenPickerDemo/TokenPickerDemo.xcodeproj">
    </FileRef>
 </Workspace>
