@@ -50,9 +50,9 @@ public class TokenField: UIView {
         /// Default maximum height = 150.0
         public static let defaultMaxHeight: CGFloat          = 150.0
         /// Default vertical inset = 7.0
-        public static let defaultVerticalInset: CGFloat      = 0
+        public static let defaultVerticalInset: CGFloat      = 2
         /// Default horizontal inset = 15.0
-        public static let defaultHorizontalInset: CGFloat    = 15.0
+        public static let defaultHorizontalInset: CGFloat    = 0
         /// Default token padding = 2.0
         public static let defaultTokenPadding: CGFloat       = 0
         /// Default minimum input width = 80.0
@@ -195,7 +195,7 @@ public class TokenField: UIView {
         super.layoutSubviews()
         scrollView.contentSize = CGSize(
             width: frame.width - Constants.defaultHorizontalInset * 2,
-            height: frame.height - Constants.defaultVerticalInset * 2
+            height: frame.height
         )
         layoutTokensAndInputWithFrameAdjustment(false)
     }
@@ -314,7 +314,7 @@ public class TokenField: UIView {
 
     private func setup() {
         originalHeight = frame.height
-        inputTextView.textContainerInset = UIEdgeInsets(top: 2, left: 0, bottom: 2, right: 0)
+        inputTextView.textContainerInset = UIEdgeInsets(top: 2, left: 0, bottom: 0, right: 0)
         inputTextView.textContainer.lineFragmentPadding = 3
 
         addSubview(invisibleTextField)

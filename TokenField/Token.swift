@@ -33,7 +33,6 @@ public class Token: UIView {
     public init(title: String) {
         self.title = title
         super.init(frame: CGRect.zero)
-        loadView()
         setup()
     }
 
@@ -61,31 +60,38 @@ public class Token: UIView {
     // MARK: - IBOutlet
 
     /// backgroundView of the Token.
-    @IBOutlet weak var backgroundView: UIView!
+    let backgroundView = UIView()
     /// titleLabel of the Token.
-    @IBOutlet weak var titleLabel: UILabel! {
-        didSet {
-            titleLabel.text = title
-            titleLabel.textColor = UIColor.white
-            titleLabel.font = .systemFont(ofSize: 15)
-        }
-    }
+    lazy var titleLabel: UILabel = {
+        let titleLabel = UILabel()
+        titleLabel.text = title
+        titleLabel.textColor = UIColor.white
+        titleLabel.font = .systemFont(ofSize: 15)
+        titleLabel.textAlignment = .center
+        
+        return titleLabel
+    }()
 
     // MARK: - Private
 
     private var tapGestureRecognizer: UITapGestureRecognizer!
 
-    private func loadView() {
-        let bundleType = type(of: self)
-        let bundle = Bundle(for: bundleType)
-        let nib = UINib(nibName: String(describing: bundleType), bundle: bundle)
-        let view = nib.instantiate(withOwner: self, options: nil).first! as! UIView
-        view.frame = bounds
-        view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        addSubview(view)
-    }
-
     private func setup() {
+        [backgroundView, titleLabel].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            addSubview($0)
+        }
+        
+        NSLayoutConstraint.activate([backgroundView.leftAnchor.constraint(equalTo: leftAnchor),
+                                     backgroundView.topAnchor.constraint(equalTo: topAnchor),
+                                     backgroundView.rightAnchor.constraint(equalTo: rightAnchor),
+                                     backgroundView.bottomAnchor.constraint(equalTo: bottomAnchor),
+                                     titleLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: 3),
+                                     titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 3),
+                                     titleLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: -3),
+                                     titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -3)])
+        
+        isUserInteractionEnabled = true
         backgroundView.layer.cornerRadius = 3
         tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(Token.didTapToken(_:)))
         colorScheme = (textColor: tintColor, backgroundColor: .clear)
